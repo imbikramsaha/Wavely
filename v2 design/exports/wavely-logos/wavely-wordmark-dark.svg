@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 150" width="540" height="150">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#06B6D4"></stop><stop offset="50%" stop-color="#3B82F6"></stop><stop offset="100%" stop-color="#6366F1"></stop>
+    </linearGradient>
+    
+  </defs>
+  <rect width="540" height="150" fill="#0B0B12"></rect>
+  <g transform="translate(20,10)" fill="url(#g)">
+    <rect x="0" y="45" width="16" height="40" rx="8"></rect>
+    <rect x="30" y="29" width="16" height="72" rx="8"></rect>
+    <rect x="60" y="10" width="16" height="110" rx="8"></rect>
+    <rect x="90" y="29" width="16" height="72" rx="8"></rect>
+    <rect x="120" y="45" width="16" height="40" rx="8"></rect>
+  </g>
+  <text x="195" y="86" font-family="Manrope, sans-serif" font-weight="800" font-size="74" letter-spacing="-2" fill="#FFFFFF">Wavely</text>
+</svg>

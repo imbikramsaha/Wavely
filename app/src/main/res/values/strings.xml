@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">Wavely</string>
+
+    <!-- Bottom nav (Wavely v2: Songs / Search / Playlists) -->
+    <string name="nav_songs">Songs</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_playlists">Playlists</string>
+
+    <!-- Labels -->
+    <string name="tab_queue">Queue</string>
+    <string name="title_favorites">Favorites</string>
+
+    <!-- Controls -->
+    <string name="cd_play">Play</string>
+    <string name="cd_pause">Pause</string>
+    <string name="cd_next">Next track</string>
+    <string name="cd_previous">Previous track</string>
+    <string name="cd_shuffle">Shuffle</string>
+    <string name="cd_repeat">Repeat</string>
+    <string name="cd_album_art">Album art</string>
+    <string name="cd_settings">Settings</string>
+    <string name="cd_overflow">More options</string>
+    <string name="cd_expand_player">Expand now playing</string>
+    <string name="cd_collapse_player">Collapse now playing</string>
+    <string name="cd_favorite">Add to favorites</string>
+    <string name="cd_unfavorite">Remove from favorites</string>
+    <string name="action_shuffle_all">Shuffle all</string>
+
+    <!-- States -->
+    <string name="empty_no_music">No music on this device</string>
+    <string name="action_rescan">Rescan</string>
+    <string name="permission_rationale">Wavely needs access to your audio files to show your music.</string>
+    <string name="action_grant_access">Grant access</string>
+    <string name="search_hint">Search songs</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_theme_system">System</string>
+    <string name="settings_dynamic_color">Dynamic color</string>
+
+    <plurals name="count_tracks">
+        <item quantity="one">%d track</item>
+        <item quantity="other">%d tracks</item>
+    </plurals>
+</resources>

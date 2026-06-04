@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wavely — All Screens</title>
+<link rel="stylesheet" href="wavely/tokens.css" />
+<style>
+  html, body { margin: 0; height: 100%; font-family: "Hanken Grotesk", system-ui, sans-serif; }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script src="wavely/data.js"></script>
+  <script type="text/babel" src="frames/design-canvas.jsx"></script>
+  <script type="text/babel" src="wavely/art.jsx"></script>
+  <script type="text/babel" src="wavely/chrome.jsx"></script>
+  <script type="text/babel" src="wavely/screens.jsx"></script>
+  <script type="text/babel" src="wavely/overlays.jsx"></script>
+  <script type="text/babel" src="wavely/app.jsx"></script>
+  <script type="text/babel">
+    const W = 384, H = 832;
+
+    // a framed screen at a given state + theme
+    function Frame({ patch, frac, theme }) {
+      const app = makeStaticApp({ ...(patch || {}), themePref: theme || 'dark' });
+      return <WavelyApp app={app} npFrac={frac} />;
+    }
+    // standalone collapsed mini-player chip
+    function MiniChip({ theme }) {
+      const app = makeStaticApp({ themePref: theme || 'dark' });
+      return (
+        <div className={'wv-root theme-' + (theme || 'dark')} style={{ width: 384, height: 150, borderRadius: 28, padding: 10 }}>
+          <div className="wv-screen" style={{ borderRadius: 20, justifyContent: 'flex-end', background: 'var(--wv-bg)' }}>
+            <div className="wv-dock" style={{ position: 'relative' }}>
+              <MiniPlayer app={app} />
+              <BottomNav app={app} />
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function App() {
+      return (
+        <DesignCanvas>
+          <DCSection id="core-dark" title="Core screens · Dark (primary)" subtitle="Songs · Search · Playlists · Favorites · Settings · Now Playing">
+            <DCArtboard id="songs" label="01 · Songs (Library)" width={W} height={H}><Frame patch={{ route: 'songs' }} /></DCArtboard>
+            <DCArtboard id="search-empty" label="02 · Search (empty)" width={W} height={H}><Frame patch={{ route: 'search', searchQuery: '' }} /></DCArtboard>
+            <DCArtboard id="search-results" label="14 · Search (results)" width={W} height={H}><Frame patch={{ route: 'search', searchQuery: 'shiva' }} /></DCArtboard>
+            <DCArtboard id="playlists" label="03 · Playlists" width={W} height={H}><Frame patch={{ route: 'playlists' }} /></DCArtboard>
+            <DCArtboard id="favorites" label="06 · Favorites detail" width={W} height={H}><Frame patch={{ route: 'detail', detailId: 'favorites' }} /></DCArtboard>
+            <DCArtboard id="settings" label="04 · Settings" width={W} height={H}><Frame patch={{ route: 'settings' }} /></DCArtboard>
+            <DCArtboard id="nowplaying" label="11 · Now Playing (expanded)" width={W} height={H}><Frame patch={{ route: 'songs', np: 'full' }} frac={0} /></DCArtboard>
+            <DCArtboard id="queue" label="12 · Queue · Up next" width={W} height={H}><Frame patch={{ route: 'songs', overlay: 'queue', np: 'full' }} frac={0} /></DCArtboard>
+          </DCSection>
+
+          <DCSection id="expansion" title="Mini → Full expansion" subtitle="The physical drag between docked mini-player and Now Playing">
+            <DCArtboard id="exp-mini" label="Collapsed · mini-player" width={W} height={H}><Frame patch={{ route: 'songs' }} frac={1} /></DCArtboard>
+            <DCArtboard id="exp-mid" label="Intermediate (~50%)" width={W} height={H}><Frame patch={{ route: 'songs', np: 'full' }} frac={0.5} /></DCArtboard>
+            <DCArtboard id="exp-full" label="Expanded · full sheet" width={W} height={H}><Frame patch={{ route: 'songs', np: 'full' }} frac={0} /></DCArtboard>
+          </DCSection>
+
+          <DCSection id="sheets-dark" title="Sheets, dialogs & menus · Dark" subtitle="Modal surfaces preserve every v1 action">
+            <DCArtboard id="sort" label="08 · Sort sheet" width={W} height={H}><Frame patch={{ route: 'songs', overlay: 'sort' }} /></DCArtboard>
+            <DCArtboard id="overflow" label="09 · Track overflow menu" width={W} height={H}><Frame patch={{ route: 'songs', overlay: 'overflow', overflowId: 't07', overflowY: 150 }} /></DCArtboard>
+            <DCArtboard id="multiselect" label="10 · Multi-select mode" width={W} height={H}><Frame patch={{ route: 'songs', selectMode: true, selected: new Set(['t07', 't10']) }} /></DCArtboard>
+            <DCArtboard id="sleep" label="13 · Sleep timer dialog" width={W} height={H}><Frame patch={{ route: 'songs', np: 'full', overlay: 'sleep' }} frac={0} /></DCArtboard>
+            <DCArtboard id="newpl" label="05 · New playlist dialog" width={W} height={H}><Frame patch={{ route: 'playlists', overlay: 'newplaylist' }} /></DCArtboard>
+            <DCArtboard id="addpl" label="Add to playlist sheet" width={W} height={H}><Frame patch={{ route: 'songs', overlay: 'addplaylist' }} /></DCArtboard>
+          </DCSection>
+
+          <DCSection id="states-dark" title="Edge states · Dark" subtitle="Permission · loading · empty mini · undo snackbar">
+            <DCArtboard id="permission" label="Permission (first run)" width={W} height={H}><Frame patch={{ route: 'permission' }} /></DCArtboard>
+            <DCArtboard id="loading" label="Loading · scanning library" width={W} height={H}><Frame patch={{ route: 'loading' }} /></DCArtboard>
+            <DCArtboard id="snackbar" label="Snackbar · remove + UNDO" width={W} height={H}><Frame patch={{ route: 'detail', detailId: 'favorites', snackbar: 'Removed from Favorites' }} /></DCArtboard>
+            <DCArtboard id="mini-standalone" label="Mini-player (component)" width={W} height={150}><MiniChip /></DCArtboard>
+          </DCSection>
+
+          <DCSection id="light" title="Light theme" subtitle="Full light variant — same system, WCAG-AA contrast">
+            <DCArtboard id="l-songs" label="Songs · Light" width={W} height={H}><Frame patch={{ route: 'songs' }} theme="light" /></DCArtboard>
+            <DCArtboard id="l-search" label="Search results · Light" width={W} height={H}><Frame patch={{ route: 'search', searchQuery: 'shiva' }} theme="light" /></DCArtboard>
+            <DCArtboard id="l-playlists" label="Playlists · Light" width={W} height={H}><Frame patch={{ route: 'playlists' }} theme="light" /></DCArtboard>
+            <DCArtboard id="l-now" label="Now Playing · Light" width={W} height={H}><Frame patch={{ route: 'songs', np: 'full' }} frac={0} theme="light" /></DCArtboard>
+            <DCArtboard id="l-settings" label="Settings · Light" width={W} height={H}><Frame patch={{ route: 'settings', themePref: 'light' }} theme="light" /></DCArtboard>
+            <DCArtboard id="l-sort" label="Sort sheet · Light" width={W} height={H}><Frame patch={{ route: 'songs', overlay: 'sort' }} theme="light" /></DCArtboard>
+          </DCSection>
+        </DesignCanvas>
+      );
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

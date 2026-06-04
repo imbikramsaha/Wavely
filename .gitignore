@@ -1,0 +1,32 @@
+# ---- Android / Gradle build output ----
+# (no inline comments — gitignore treats trailing '#' as part of the pattern)
+*.iml
+.gradle/
+build/
+/captures
+.externalNativeBuild
+.cxx
+# Kotlin compiler session/cache dir
+.kotlin/
+
+# ---- Local / machine-specific ----
+local.properties
+.DS_Store
+*.hprof
+
+# ---- IDE ----
+/.idea
+
+# ---- Build artifacts (use GitHub Releases for distributable binaries) ----
+*.apk
+*.aab
+
+# ---- Tooling (local-only) ----
+.claude/settings.local.json
+
+# ---- Release signing — MUST stay private (never commit) ----
+keystore.properties
+*.jks
+*.keystore
+*.p12
+*.pem

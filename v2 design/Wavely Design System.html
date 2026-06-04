@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wavely — Design System</title>
+<link rel="stylesheet" href="wavely/tokens.css" />
+<style>
+  html, body { margin: 0; background: #07090c; color: #EAEEF3; font-family: "Hanken Grotesk", system-ui, sans-serif; }
+  .page { max-width: 1080px; margin: 0 auto; padding: 64px 32px 120px; }
+  .lede { color: #99A3B0; font-size: 17px; line-height: 1.6; max-width: 680px; }
+  h1 { font-size: 44px; font-weight: 800; letter-spacing: -.03em; margin: 0 0 12px; }
+  h2 { font-size: 13px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #6CA8FF; margin: 0 0 24px; }
+  h3 { font-size: 20px; font-weight: 700; letter-spacing: -.01em; margin: 0 0 4px; }
+  .muted { color: #99A3B0; }
+  .t3 { color: #636E7B; }
+  section { padding: 56px 0; border-top: 1px solid rgba(255,255,255,.07); }
+  section:first-of-type { border-top: none; }
+  .row { display: flex; flex-wrap: wrap; gap: 16px; }
+  .grid { display: grid; gap: 16px; }
+  .card { background: #12161C; border: 1px solid rgba(255,255,255,.07); border-radius: 18px; padding: 22px; }
+  code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12.5px; color: #8FB6F2; background: rgba(108,168,255,.1); padding: 1px 6px; border-radius: 5px; }
+  /* color swatches */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: 12px; }
+  .sw { border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,.08); }
+  .sw .chip { height: 64px; }
+  .sw .lab { padding: 10px 12px; font-size: 12px; background: #12161C; }
+  .sw .lab b { display: block; font-weight: 600; font-size: 12.5px; }
+  .sw .lab span { color: #636E7B; font-family: ui-monospace, monospace; font-size: 11px; }
+  /* type */
+  .typerow { display: flex; align-items: baseline; gap: 20px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+  .typerow .meta { width: 150px; flex: none; color: #636E7B; font-size: 12px; }
+  /* spacing */
+  .spacebar { height: 16px; background: var(--wv-grad); border-radius: 4px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,.07); vertical-align: top; }
+  th { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #636E7B; font-weight: 700; }
+  td b { font-weight: 600; }
+  .pill { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: rgba(108,168,255,.14); color: #6CA8FF; }
+  .icongrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px,1fr)); gap: 10px; }
+  .iconcell { background: #12161C; border: 1px solid rgba(255,255,255,.07); border-radius: 14px; padding: 16px 8px; display: flex; flex-direction: column; align-items: center; gap: 8px; color: #EAEEF3; }
+  .iconcell span { font-size: 10.5px; color: #636E7B; }
+  .demo { background: #0A0C10; border: 1px solid rgba(255,255,255,.07); border-radius: 20px; padding: 16px; }
+  .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px){ .twocol { grid-template-columns: 1fr; } }
+  .note { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 14px; background: rgba(108,168,255,.08); border: 1px solid rgba(108,168,255,.18); font-size: 14px; line-height: 1.55; color: #C4D4EA; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header style="margin-bottom:8px;">
+    <div id="brandmark" style="margin-bottom:20px;"></div>
+    <h1>Wavely Design System</h1>
+    <p class="lede">A calm, premium foundation for an offline, on-device music player. Deep neutrals, one serene gradient accent derived from the Wavely mark, and a fallback-art system built for a library that is mostly art-less and full of long, messy titles. Dark is primary; light and Android dynamic-color are first-class. This is a Compose / Material 3 theme + component restyle — <b>no behavior changes</b>.</p>
+  </header>
+
+  <!-- COLOR -->
+  <section>
+    <h2>Colors · Tokens</h2>
+    <h3>Dark (primary)</h3>
+    <p class="muted" style="margin:0 0 18px; font-size:14px;">Near-black, faintly cool neutrals keep artwork and the accent doing the talking.</p>
+    <div class="swatches" id="sw-dark"></div>
+    <h3 style="margin-top:32px;">Light</h3>
+    <p class="muted" style="margin:0 0 18px; font-size:14px;">Soft cool-white surfaces; accent darkens to hold WCAG-AA on white.</p>
+    <div class="swatches" id="sw-light"></div>
+    <div class="note" style="margin-top:24px;">
+      <div><b>Dynamic color (Material You):</b> when the user enables it, map Android’s generated <code>primary</code> → <code>--wv-accent</code>, <code>surfaceContainer*</code> → <code>--wv-surface 1/2/3</code>, and <code>onSurfaceVariant</code> → <code>--wv-text-2</code>. The brand gradient stays fixed for the mark, the now-playing progress and the active-row equalizer so Wavely is still recognisable under any wallpaper palette.</div>
+    </div>
+  </section>
+
+  <!-- TYPE -->
+  <section>
+    <h2>Typography · Hanken Grotesk</h2>
+    <p class="muted" style="margin:-8px 0 8px; font-size:14px;">A clean, slightly warm grotesque — premium without the over-used feel of the platform default. 4px baseline rhythm.</p>
+    <div id="type"></div>
+  </section>
+
+  <!-- SPACING -->
+  <section>
+    <h2>Spacing · Radius · Elevation</h2>
+    <div class="twocol">
+      <div class="card">
+        <h3 style="font-size:16px;">Spacing scale (base 4)</h3>
+        <div id="spacing" style="margin-top:14px; display:flex; flex-direction:column; gap:10px;"></div>
+      </div>
+      <div class="card">
+        <h3 style="font-size:16px;">Radius &amp; elevation</h3>
+        <div class="row" style="margin-top:16px; align-items:flex-end;">
+          <div style="text-align:center;"><div style="width:64px;height:64px;border-radius:14px;background:#1E242D;border:1px solid rgba(255,255,255,.08);"></div><div class="t3" style="font-size:11px;margin-top:8px;">tile · 14</div></div>
+          <div style="text-align:center;"><div style="width:64px;height:64px;border-radius:18px;background:#1E242D;border:1px solid rgba(255,255,255,.08);"></div><div class="t3" style="font-size:11px;margin-top:8px;">card · 18</div></div>
+          <div style="text-align:center;"><div style="width:64px;height:64px;border-radius:28px 28px 0 0;background:#1E242D;border:1px solid rgba(255,255,255,.08);"></div><div class="t3" style="font-size:11px;margin-top:8px;">sheet · 28</div></div>
+          <div style="text-align:center;"><div style="width:64px;height:64px;border-radius:999px;background:#1E242D;border:1px solid rgba(255,255,255,.08);"></div><div class="t3" style="font-size:11px;margin-top:8px;">pill</div></div>
+        </div>
+        <div style="margin-top:20px; display:flex; gap:14px;">
+          <div style="flex:1;height:56px;border-radius:14px;background:#12161C;box-shadow:0 10px 30px -16px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.07);display:grid;place-items:center;font-size:12px;" class="t3">mini · dock</div>
+          <div style="flex:1;height:56px;border-radius:14px;background:#12161C;box-shadow:0 18px 50px -22px rgba(0,0,0,.8);border:1px solid rgba(255,255,255,.07);display:grid;place-items:center;font-size:12px;" class="t3">sheet · scrim</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ICONS -->
+  <section>
+    <h2>Iconography</h2>
+    <p class="muted" style="margin:-8px 0 22px; font-size:14px;">One custom stroke set — 2px, round caps/joins, 24px grid. Filled variants for play / pause / favorite-on. Auto-mirrored for RTL.</p>
+    <div class="icongrid" id="icons"></div>
+  </section>
+
+  <!-- FALLBACK ART -->
+  <section>
+    <h2>Generated fallback artwork</h2>
+    <p class="muted" style="margin:-8px 0 22px; font-size:14px; max-width:680px;">Most tracks have no cover. Each gets a <b>stable, unique gradient</b> hashed from its title (so the same song always looks the same), a soft sheen, a faint waveform baseline for music identity, and a monogram from the first real character. Real embedded art simply slots into the same rounded frame when present.</p>
+    <div class="row" id="artgallery"></div>
+  </section>
+
+  <!-- COMPONENTS -->
+  <section>
+    <h2>Components</h2>
+    <div class="grid" style="gap:28px;">
+      <div>
+        <h3 style="font-size:16px;margin-bottom:12px;">Track row <span class="t3" style="font-weight:500;">· default · playing · multi-select</span></h3>
+        <div class="demo" id="c-rows"></div>
+      </div>
+      <div class="twocol">
+        <div><h3 style="font-size:16px;margin-bottom:12px;">Mini-player</h3><div class="demo" id="c-mini"></div></div>
+        <div><h3 style="font-size:16px;margin-bottom:12px;">Bottom navigation</h3><div class="demo" id="c-nav"></div></div>
+      </div>
+      <div>
+        <h3 style="font-size:16px;margin-bottom:12px;">Buttons · chips · controls</h3>
+        <div class="demo" id="c-buttons"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REDLINES -->
+  <section>
+    <h2>Implementation notes · Redlines</h2>
+    <p class="muted" style="margin:-8px 0 22px; font-size:14px;">Every v1 control maps 1:1 to a restyled v2 element. No screens, actions, or data added or removed.</p>
+    <table>
+      <thead><tr><th style="width:30%">v1 element</th><th style="width:34%">v2 restyle</th><th>Behavior</th></tr></thead>
+      <tbody>
+        <tr><td><b>Gray music-note tiles</b></td><td>Title-hashed gradient tile + monogram + waveform; embedded art when present</td><td class="muted">Unchanged — decorative only</td></tr>
+        <tr><td><b>Top bar</b> (centered title + 3 actions)</td><td>Brand mark + “Wavely” wordmark left; shuffle / sort / gear right</td><td class="muted">Same actions, same targets</td></tr>
+        <tr><td><b>Active-row blue bars</b></td><td>Animated equalizer over dimmed art + accent title</td><td class="muted">Same “now playing” indicator</td></tr>
+        <tr><td><b>List row</b> (title · artist · duration · ⋮)</td><td>16px title / 12.5px secondary, graceful truncation, 64dp row</td><td class="muted">Tap-to-play, ⋮ overflow, long-press select</td></tr>
+        <tr><td><b>Mini-player strip</b></td><td>Floating rounded card above nav with gradient progress hairline</td><td class="muted">Tap → expand; play/pause; next</td></tr>
+        <tr><td><b>Now Playing</b></td><td>Art-derived ambient bg, 290dp artwork, gradient play FAB, elapsed/remaining</td><td class="muted">Shuffle·prev·play·next·repeat, seek, queue/sleep/speed/favorite</td></tr>
+        <tr><td><b>Bottom nav</b></td><td>Pill-highlight active tab, custom icons</td><td class="muted">Songs / Search / Playlists</td></tr>
+        <tr><td><b>Sort / Sleep / New-playlist / Add-to-playlist</b></td><td>Rounded 28px sheets &amp; 26px dialogs, accent radios</td><td class="muted">Identical options &amp; results</td></tr>
+        <tr><td><b>Overflow menu</b></td><td>Floating rounded menu, leading icons</td><td class="muted">Play next / queue / playlist / favorite</td></tr>
+        <tr><td><b>Multi-select</b></td><td>Contextual top bar “N selected” + circular checks</td><td class="muted">Clear / play-next / queue / add</td></tr>
+        <tr><td><b>Queue</b></td><td>“Up next” sheet, drag handles, swipe-to-remove + undo snackbar</td><td class="muted">Reorder, remove, jump</td></tr>
+      </tbody>
+    </table>
+
+    <div class="grid" style="gap:14px; margin-top:28px;">
+      <div class="note"><div><b>Inset-safe, edge-to-edge (v1 bug fix):</b> the screen is a column — status bar, scrollable body, then an absolutely-docked mini-player + nav that pads <code>env(safe-area-inset-bottom)</code>. Now-Playing transport also reserves that inset. Nothing ever sits under the system bars.</div></div>
+      <div class="note"><div><b>Responsive:</b> <b>medium</b> width → bottom nav becomes a left <b>navigation rail</b>; <b>expanded/tablet</b> → Now Playing is a persistent right <b>side panel</b> beside the library; <b>landscape</b> → Now Playing splits into a <b>two-pane</b> (artwork left, controls + queue right).</div></div>
+      <div class="note"><div><b>Accessibility:</b> all touch targets ≥ 48dp; body/secondary text meets WCAG-AA on both themes; layouts reflow at large font scales (titles clamp to 2 lines, never truncate the secondary line away); predictive-back collapses the Now Playing sheet.</div></div>
+      <div class="note"><div><b>Motion:</b> mini ⇄ full is a single physical drag (spring <code>cubic-bezier(.22,.9,.27,1)</code>); favorite toggle pops; rows press to 0.96; selection &amp; drag-reorder animate; undo snackbar slides up. All gated by <code>prefers-reduced-motion</code>.</div></div>
+    </div>
+  </section>
+
+  <footer style="padding-top:48px; color:#636E7B; font-size:13px; display:flex; align-items:center; gap:10px;">
+    <span id="footmark"></span> Wavely v2 · calm minimal · built on Hanken Grotesk &amp; a cyan→indigo accent.
+  </footer>
+</div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="wavely/data.js"></script>
+  <script type="text/babel" src="wavely/art.jsx"></script>
+  <script type="text/babel" src="wavely/chrome.jsx"></script>
+  <script type="text/babel">
+    const mount = (id, el) => { const n = document.getElementById(id); if (n) ReactDOM.createRoot(n).render(el); };
+
+    mount('brandmark', <WavelyMark size={40} />);
+    mount('footmark', <WavelyMark size={20} />);
+
+    // color swatches
+    const DARK = [
+      ['Background','#0A0C10'],['Surface 1','#12161C'],['Surface 2','#171C23'],['Surface 3','#1E242D'],
+      ['Text','#EAEEF3'],['Text 2','#99A3B0'],['Text 3','#636E7B'],['Accent','#6CA8FF'],
+    ];
+    const LIGHT = [
+      ['Background','#EEF1F6'],['Surface','#FFFFFF'],['Surface 3','#EAEEF4'],['Hover','#E3E9F1'],
+      ['Text','#121722'],['Text 2','#59636F'],['Text 3','#8A94A1'],['Accent','#2F6BE0'],
+    ];
+    const Swatches = ({list}) => (<>{list.map(([n,h])=>(
+      <div className="sw" key={n}><div className="chip" style={{background:h}}></div><div className="lab"><b>{n}</b><span>{h}</span></div></div>
+    ))}</>);
+    mount('sw-dark', <Swatches list={DARK}/>);
+    mount('sw-light', <Swatches list={LIGHT}/>);
+    // gradient swatch appended to dark
+    const gn = document.getElementById('sw-dark');
+
+    // type scale
+    const TYPE = [
+      ['Now Playing title','28 / 700', 28, 700, 'Namah Aum Namah Shivaya'],
+      ['Screen title','21 / 700', 21, 700, 'Playlists'],
+      ['Track title','15.5 / 600', 15.5, 600, 'Shiv Kailasho Ke Vasi'],
+      ['Secondary','12.5 / 500', 12.5, 500, 'Sounds of Isha · 4:51'],
+      ['Label / caps','12 / 700', 12, 700, 'SORT BY'],
+      ['Nav label','11.5 / 600', 11.5, 600, 'Songs'],
+    ];
+    mount('type', <>{TYPE.map(([n,s,fz,fw,sample])=>(
+      <div className="typerow" key={n}><div className="meta">{n}<br/><span style={{color:'#454e59'}}>{s}</span></div>
+        <div style={{fontSize:fz,fontWeight:fw,letterSpacing:fz>20?'-.02em':'0',textTransform:n.includes('caps')?'uppercase':'none'}}>{sample}</div></div>
+    ))}</>);
+
+    // spacing
+    const SP = [['1',4],['2',8],['3',12],['4',16],['5',20],['6',24],['7',32],['8',40]];
+    mount('spacing', <>{SP.map(([n,px])=>(
+      <div key={n} style={{display:'flex',alignItems:'center',gap:12}}>
+        <span className="t3" style={{width:54,fontSize:12,fontFamily:'ui-monospace,monospace'}}>--wv-{n}</span>
+        <div style={{height:14,width:px*3,background:'var(--wv-grad)',borderRadius:4}}></div>
+        <span className="t3" style={{fontSize:12}}>{px}px</span>
+      </div>
+    ))}</>);
+
+    // icons
+    const ICONS = ['shuffle','sort','gear','search','note','heart','heartFill','more','play','pause','next','prev','repeat','repeatOne','moon','queue','plus','back','close','check','drag','playNext','addQueue','speed','chevR','arrowDown'];
+    mount('icons', <>{ICONS.map(n=>(
+      <div className="iconcell" key={n}><Icon name={n} size={24}/><span>{n}</span></div>
+    ))}</>);
+
+    // art gallery
+    const ART = ['t01','t03','t05','t07','t09','t10','t13','t15','t17','t19'].map(id=>WAVELY_DATA.byId[id]);
+    mount('artgallery', <>{ART.map(t=>(
+      <div key={t.id} style={{textAlign:'center'}}>
+        <WavelyArt track={t} size={72} radius={16}/>
+      </div>
+    ))}</>);
+
+    // component demos — wrap in themed surface
+    const Demo = ({children}) => <div className="theme-dark" style={{display:'flex',flexDirection:'column',gap:8}}>{children}</div>;
+    const fakeApp = makeFakeApp();
+    function makeFakeApp(){
+      return { s: { selectMode:false, selected:new Set(['t05']), playingId:'t07', isPlaying:true, favorites:new Set(['t07']), route:'songs', position:120 }, interactive:false,
+        play(){},togglePlay(){},next(){},openOverflow(){},toggleSelect(){},enterSelect(){},expandNP(){},go(){},toggleShuffle(){} };
+    }
+    // rows: default, playing, select
+    mount('c-rows', <Demo>
+      <TrackRow track={WAVELY_DATA.byId['t13']} app={fakeApp} active={false} />
+      <TrackRow track={WAVELY_DATA.byId['t07']} app={fakeApp} active={true} />
+      <TrackRow track={WAVELY_DATA.byId['t05']} app={{...fakeApp, s:{...fakeApp.s, selectMode:true}}} active={false} />
+    </Demo>);
+    mount('c-mini', <Demo><div style={{position:'relative'}}><MiniPlayer app={fakeApp}/></div></Demo>);
+    mount('c-nav', <Demo><BottomNav app={fakeApp}/></Demo>);
+    mount('c-buttons', <div className="theme-dark" style={{display:'flex',flexWrap:'wrap',gap:14,alignItems:'center'}}>
+      <button className="wv-btn primary">Grant access</button>
+      <button className="wv-btn tonal">Shuffle all</button>
+      <button className="wv-btn text">Done</button>
+      <div className="wv-fab"><Icon name="plus"/></div>
+      <div style={{display:'flex',alignItems:'flex-end',gap:8,padding:'0 8px'}}><Eq/><span className="t3" style={{fontSize:12}}>equalizer</span></div>
+      <div style={{flex:'1 1 200px',minWidth:200}}>
+        <div style={{position:'relative',height:6,borderRadius:3,background:'rgba(255,255,255,.2)'}}>
+          <div style={{position:'absolute',left:0,top:0,bottom:0,width:'42%',background:'var(--wv-grad)',borderRadius:3}}></div>
+          <div style={{position:'absolute',left:'calc(42% - 7px)',top:'50%',transform:'translateY(-50%)',width:14,height:14,borderRadius:'50%',background:'#fff'}}></div>
+        </div>
+        <div style={{display:'flex',justifyContent:'space-between',marginTop:6,fontSize:11,color:'#99A3B0',fontWeight:600}}><span>2:00</span><span>-2:51</span></div>
+      </div>
+    </div>);
+  </script>
+</body>
+</html>

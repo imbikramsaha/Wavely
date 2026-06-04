@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wavely — Logo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cyan: #06B6D4;
+    --blue: #3B82F6;
+    --indigo: #6366F1;
+    --ink: #0B0B12;
+    --paper: #FFFFFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: "Manrope", system-ui, sans-serif;
+    background: #ECEEF3;
+    color: #14151A;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 64px 32px 96px;
+    gap: 56px;
+  }
+
+  header { text-align: center; max-width: 620px; }
+  header .eyebrow {
+    font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+    font-weight: 700; color: #8A8F9C; margin-bottom: 14px;
+  }
+  header h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; }
+  header p { margin-top: 10px; font-size: 15px; line-height: 1.55; color: #5C616E; font-weight: 500; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+    width: 100%;
+    max-width: 880px;
+  }
+  @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+
+  .panel {
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(16,18,24,.06), 0 18px 40px -24px rgba(16,18,24,.45);
+    display: flex;
+    flex-direction: column;
+  }
+  .stage {
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .stage.light { background: var(--paper); }
+  .stage.dark  { background: var(--ink); }
+  .stage svg { width: 46%; height: auto; display: block; }
+
+  .caption {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px; font-size: 13px; font-weight: 600;
+    background: #fff; color: #5C616E;
+    border-top: 1px solid #EDEFF3;
+  }
+  .swatches { display: flex; gap: 6px; }
+  .swatches i { width: 14px; height: 14px; border-radius: 50%; display: block; }
+
+  /* lockups row */
+  .lockups {
+    display: grid; grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 28px; width: 100%; max-width: 880px;
+  }
+  @media (max-width: 720px) { .lockups { grid-template-columns: 1fr; } }
+
+  .lockup-card {
+    border-radius: 24px; padding: 40px;
+    display: flex; align-items: center; justify-content: center; gap: 18px;
+    box-shadow: 0 1px 2px rgba(16,18,24,.06), 0 18px 40px -24px rgba(16,18,24,.45);
+  }
+  .lockup-card.light { background: #fff; }
+  .lockup-card.dark  { background: var(--ink); }
+  .lockup-card svg { height: 44px; width: auto; }
+  .wordmark { font-weight: 800; font-size: 38px; letter-spacing: -0.03em; }
+  .wordmark.on-light { color: var(--ink); }
+  .wordmark.on-dark  { color: #fff; }
+
+  /* app icon row */
+  .icons { display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; }
+  .app-icon {
+    width: 132px; height: 132px; border-radius: 30px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 1px 2px rgba(16,18,24,.08), 0 20px 44px -22px rgba(16,18,24,.5);
+  }
+  .app-icon.grad { background: linear-gradient(135deg, #0E1330 0%, #0B0B12 100%); }
+  .app-icon.lite { background: #fff; }
+  .app-icon svg { width: 56%; height: auto; }
+  .icon-label { text-align: center; font-size: 12px; font-weight: 600; color: #8A8F9C; margin-top: 12px; letter-spacing: .02em; }
+  .icon-col { display: flex; flex-direction: column; align-items: center; }
+
+  .section-label {
+    font-size: 12px; letter-spacing: .2em; text-transform: uppercase;
+    font-weight: 700; color: #9398A4; align-self: flex-start; width: 100%; max-width: 880px;
+    margin-bottom: -28px;
+  }
+</style>
+</head>
+<body>
+  <!-- ============ shared SVG symbol ============ -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="waveGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%"  stop-color="#06B6D4" />
+        <stop offset="50%" stop-color="#3B82F6" />
+        <stop offset="100%" stop-color="#6366F1" />
+      </linearGradient>
+      <!-- The mark: 5 pill bars, symmetric heights small / little-big / big / little-big / small -->
+      <symbol id="waveMark" viewBox="0 0 136 130">
+        <g fill="url(#waveGrad)">
+          <rect x="0"   y="45"  width="16" height="40"  rx="8" />
+          <rect x="30"  y="29"  width="16" height="72"  rx="8" />
+          <rect x="60"  y="10"  width="16" height="110" rx="8" />
+          <rect x="90"  y="29"  width="16" height="72"  rx="8" />
+          <rect x="120" y="45"  width="16" height="40"  rx="8" />
+        </g>
+      </symbol>
+    </defs>
+  </svg>
+
+  <header>
+    <div class="eyebrow">Wavely · Brand Mark</div>
+    <h1>The Wavely logo</h1>
+    <p>Five rounded bars rising to a centred peak — small, little-big, big, little-big, small. A single cyan→blue→indigo gradient sweeps the full width, so each bar carries a slightly different hue. Minimal, symmetric, unmistakably “sound.”</p>
+  </header>
+
+  <!-- primary deliverables -->
+  <div class="grid">
+    <div class="panel">
+      <div class="stage light">
+        <svg viewBox="0 0 136 130"><use href="#waveMark" /></svg>
+      </div>
+      <div class="caption">
+        <span>Logo · White background</span>
+        <span class="swatches"><i style="background:#06B6D4"></i><i style="background:#3B82F6"></i><i style="background:#6366F1"></i></span>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="stage dark">
+        <svg viewBox="0 0 136 130"><use href="#waveMark" /></svg>
+      </div>
+      <div class="caption">
+        <span>Logo · Black background</span>
+        <span class="swatches"><i style="background:#06B6D4"></i><i style="background:#3B82F6"></i><i style="background:#6366F1"></i></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- wordmark lockups -->
+  <div class="section-label">Wordmark lockup</div>
+  <div class="lockups">
+    <div class="lockup-card light">
+      <svg viewBox="0 0 136 130"><use href="#waveMark" /></svg>
+      <span class="wordmark on-light">Wavely</span>
+    </div>
+    <div class="lockup-card dark">
+      <svg viewBox="0 0 136 130"><use href="#waveMark" /></svg>
+      <span class="wordmark on-dark">Wavely</span>
+    </div>
+  </div>
+
+  <!-- app icons -->
+  <div class="section-label">App icon</div>
+  <div class="icons">
+    <div class="icon-col">
+      <div class="app-icon grad"><svg viewBox="0 0 136 130"><use href="#waveMark" /></svg></div>
+      <div class="icon-label">Dark icon</div>
+    </div>
+    <div class="icon-col">
+      <div class="app-icon lite"><svg viewBox="0 0 136 130"><use href="#waveMark" /></svg></div>
+      <div class="icon-label">Light icon</div>
+    </div>
+  </div>
+</body>
+</html>
