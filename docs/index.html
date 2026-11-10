@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wavely — Offline music player for Android</title>
+  <meta name="description" content="Wavely is a calm, minimal music player for the songs already on your phone. No account, no ads, no internet access. Free APK download for Android 8.0+.">
+  <meta name="theme-color" content="#0A0C10" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#F4F6FA" media="(prefers-color-scheme: light)">
+  <link rel="canonical" href="https://imbikramsaha.github.io/Wavely/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Wavely">
+  <meta property="og:title" content="Wavely — Offline music player for Android">
+  <meta property="og:description" content="A calm, minimal player for the music on your phone. No account, no ads, no internet access.">
+  <meta property="og:url" content="https://imbikramsaha.github.io/Wavely/">
+  <meta property="og:image" content="https://imbikramsaha.github.io/Wavely/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/icon-192.png" sizes="192x192" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --font: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      --grad: linear-gradient(105deg, #2FD3E6 0%, #5B8DF4 52%, #8E7BFF 100%);
+
+      --bg: #0A0C10;
+      --bg-2: #0E1116;
+      --surface: #12161C;
+      --surface-2: #171C23;
+      --line: rgba(255,255,255,.07);
+      --line-2: rgba(255,255,255,.12);
+      --text: #EAEEF3;
+      --text-2: #99A3B0;
+      --text-3: #6F7A87;
+      --accent: #6CA8FF;
+      --on-grad: #061320;
+      --glow: rgba(91,141,244,.28);
+      --phone: #05070A;
+      --shadow: 0 30px 80px -30px rgba(0,0,0,.85);
+      color-scheme: dark;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #F4F6FA;
+        --bg-2: #EEF1F6;
+        --surface: #FFFFFF;
+        --surface-2: #FFFFFF;
+        --line: rgba(16,22,32,.08);
+        --line-2: rgba(16,22,32,.14);
+        --text: #121722;
+        --text-2: #4F5965;
+        --text-3: #6B7582;
+        --accent: #2F6BE0;
+        --glow: rgba(91,141,244,.22);
+        --phone: #0B0D12;
+        --shadow: 0 30px 70px -30px rgba(20,30,55,.45);
+        color-scheme: light;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      font-size: 17px;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+    h1, h2, h3 { line-height: 1.12; margin: 0; letter-spacing: -0.02em; }
+    p { margin: 0; }
+    .wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    @media (max-width: 520px) { .wrap { padding: 0 16px; } }
+    .grad-text {
+      background: var(--grad);
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent;
+    }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 8px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+    /* ---------- Nav ---------- */
+    .nav {
+      position: sticky; top: 0; z-index: 20;
+      background: color-mix(in srgb, var(--bg) 78%, transparent);
+      backdrop-filter: saturate(160%) blur(14px);
+      -webkit-backdrop-filter: saturate(160%) blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav .wrap { display: flex; align-items: center; gap: 24px; height: 64px; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; font-size: 20px; letter-spacing: -0.02em; }
+    .brand img { width: 26px; height: 25px; }
+    .nav-links { display: flex; gap: 4px; margin-left: auto; }
+    .nav-links a {
+      text-decoration: none; color: var(--text-2); font-weight: 500; font-size: 15px;
+      padding: 8px 12px; border-radius: 999px;
+    }
+    .nav-links a:hover { color: var(--text); background: var(--line); }
+    @media (max-width: 720px) {
+      .nav-links { display: none; }
+      .nav-cta { margin-left: auto; }
+    }
+
+    /* ---------- Buttons ---------- */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      font: inherit; font-weight: 700; text-decoration: none; white-space: nowrap;
+      border-radius: 999px; padding: 14px 26px; font-size: 17px;
+      transition: transform .15s ease, box-shadow .2s ease, background-color .2s ease;
+    }
+    .btn svg { width: 20px; height: 20px; flex: none; }
+    .btn-primary { background: var(--grad); color: var(--on-grad); box-shadow: 0 10px 30px -10px var(--glow); }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 16px 36px -12px rgba(91,141,244,.55); }
+    .btn-ghost { color: var(--text); border: 1px solid var(--line-2); background: transparent; }
+    .btn-ghost:hover { background: var(--line); }
+    .btn-sm { padding: 9px 16px; font-size: 15px; }
+    .btn-sm svg { width: 17px; height: 17px; }
+
+    /* ---------- Hero ---------- */
+    .hero { position: relative; padding: 72px 0 40px; overflow: hidden; }
+    .hero::before {
+      content: ""; position: absolute; inset: -20% -10% auto 35%; height: 720px;
+      background: radial-gradient(closest-side, var(--glow), transparent 70%);
+      pointer-events: none;
+    }
+    .hero .wrap { position: relative; display: grid; grid-template-columns: 1.05fr .95fr; gap: 48px; align-items: center; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 14px; font-weight: 600; color: var(--text-2);
+      padding: 6px 14px 6px 8px; border: 1px solid var(--line-2); border-radius: 999px;
+      background: var(--surface);
+    }
+    .eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--grad); margin-left: 4px; }
+    .hero h1 { font-size: clamp(42px, 6.4vw, 72px); font-weight: 800; margin: 22px 0 20px; letter-spacing: -0.035em; }
+    .hero .lede { font-size: clamp(18px, 2vw, 20px); color: var(--text-2); max-width: 520px; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+    .dl-meta { margin-top: 14px; font-size: 14px; color: var(--text-3); }
+    .dl-meta span + span::before { content: "·"; margin: 0 8px; }
+
+    .phones { position: relative; height: 600px; }
+    .phone {
+      position: absolute; width: 270px;
+      background: var(--phone); padding: 8px; border-radius: 40px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08), var(--shadow);
+    }
+    .phone img { border-radius: 32px; width: 100%; height: auto; aspect-ratio: 600 / 1176; }
+    .phones .back { left: 6%; top: 46px; transform: rotate(-6deg); opacity: .96; }
+    .phones .front { right: 4%; top: 0; transform: rotate(3deg); z-index: 1; }
+
+    @media (max-width: 900px) {
+      .hero { padding-top: 48px; }
+      .hero .wrap { grid-template-columns: 1fr; gap: 32px; }
+      .hero-copy { text-align: center; }
+      .hero .lede { margin: 0 auto; }
+      .cta-row { justify-content: center; }
+      .phones { height: 520px; max-width: 460px; width: 100%; margin: 0 auto; }
+      .phone { width: 230px; }
+    }
+    @media (max-width: 480px) {
+      .phones { height: 430px; }
+      .phone { width: 188px; border-radius: 30px; padding: 6px; }
+      .phone img { border-radius: 25px; }
+      .phones .back { left: 2%; }
+      .phones .front { right: 2%; }
+      .cta-row .btn { width: 100%; }
+    }
+
+    /* ---------- Sections ---------- */
+    section { scroll-margin-top: 72px; }
+    .section { padding: 96px 0; }
+    .section-head { max-width: 640px; margin-bottom: 48px; }
+    .kicker { font-size: 14px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    .section h2 { font-size: clamp(32px, 4.4vw, 46px); font-weight: 800; }
+    .section-head p { color: var(--text-2); margin-top: 16px; font-size: 18px; }
+    @media (max-width: 600px) { .section { padding: 72px 0; } }
+
+    /* ---------- Features ---------- */
+    .features { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    @media (max-width: 1000px) { .features { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .features { grid-template-columns: 1fr; } }
+    .feature {
+      background: var(--surface); border: 1px solid var(--line); border-radius: 20px;
+      padding: 24px;
+    }
+    .icon {
+      width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center;
+      margin-bottom: 18px; position: relative;
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
+      color: var(--accent);
+    }
+    .icon svg { width: 22px; height: 22px; }
+    .feature h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; }
+    .feature p { color: var(--text-2); font-size: 15.5px; line-height: 1.55; }
+    @media (max-width: 560px) {
+      .features { gap: 12px; }
+      .feature { display: grid; grid-template-columns: 44px 1fr; column-gap: 16px; padding: 20px; }
+      .feature .icon { margin-bottom: 0; grid-row: span 2; }
+      .feature h3 { margin: 2px 0 4px; }
+    }
+
+    /* ---------- Screens ---------- */
+    .screens-section { background: var(--bg-2); border-block: 1px solid var(--line); }
+    .screens-top { display: flex; align-items: end; justify-content: space-between; gap: 24px; }
+    .scroller-btns { display: flex; gap: 8px; margin-bottom: 48px; }
+    .scroller-btns button {
+      width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line-2);
+      background: var(--surface); color: var(--text); cursor: pointer; display: grid; place-items: center;
+    }
+    .scroller-btns button:hover { background: var(--surface-2); border-color: var(--text-3); }
+    .scroller-btns svg { width: 20px; height: 20px; }
+    @media (max-width: 720px) { .scroller-btns { display: none; } }
+    .scroller {
+      /* full-bleed strip whose first item lines up with the page container */
+      --pad: max(24px, calc((100vw - 1120px) / 2 + 24px));
+      display: flex; gap: 28px; overflow-x: auto; scroll-snap-type: x mandatory;
+      padding: 8px var(--pad) 28px;
+      scroll-padding-inline: var(--pad);
+      scrollbar-width: thin; scrollbar-color: var(--line-2) transparent;
+      overscroll-behavior-x: contain;
+    }
+    @media (max-width: 520px) { .scroller { --pad: 16px; gap: 18px; } }
+    .shot { flex: none; width: 236px; scroll-snap-align: start; margin: 0; }
+    .shot .phone { position: relative; width: 100%; border-radius: 34px; padding: 7px; box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 20px 50px -28px rgba(0,0,0,.7); }
+    .shot .phone img { border-radius: 28px; }
+    .shot figcaption { margin-top: 16px; text-align: center; }
+    .shot strong { display: block; font-size: 16px; }
+    .shot span { font-size: 14px; color: var(--text-2); }
+    @media (max-width: 520px) { .shot { width: 72vw; max-width: 236px; } }
+
+    /* ---------- Privacy ---------- */
+    .privacy {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
+      background: var(--surface); border: 1px solid var(--line); border-radius: 28px;
+      padding: 56px; position: relative; overflow: hidden;
+    }
+    .privacy::after {
+      content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--grad);
+    }
+    .privacy h2 { font-size: clamp(30px, 3.8vw, 40px); font-weight: 800; }
+    .privacy .copy p { color: var(--text-2); margin-top: 16px; font-size: 18px; }
+    .perm-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+    .perm-list li {
+      display: grid; grid-template-columns: 36px 1fr; gap: 14px; align-items: start;
+      padding: 16px; border-radius: 16px; background: var(--bg-2); border: 1px solid var(--line);
+    }
+    .perm-list .pi { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; }
+    .perm-list .pi svg { width: 18px; height: 18px; }
+    .perm-list .yes .pi { background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); }
+    .perm-list .no .pi { background: color-mix(in srgb, #F07178 14%, transparent); color: #F07178; }
+    .perm-list strong { display: block; font-size: 16px; }
+    .perm-list span { color: var(--text-2); font-size: 15px; }
+    @media (max-width: 860px) {
+      .privacy { grid-template-columns: 1fr; padding: 36px 24px; gap: 32px; }
+    }
+
+    /* ---------- Install ---------- */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: step; }
+    @media (max-width: 860px) { .steps { grid-template-columns: 1fr; } }
+    .step {
+      background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 28px;
+      counter-increment: step;
+    }
+    .step::before {
+      content: counter(step);
+      display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%;
+      background: var(--grad); color: var(--on-grad); font-weight: 800; margin-bottom: 18px;
+    }
+    .step h3 { font-size: 19px; font-weight: 700; margin-bottom: 8px; }
+    .step p { color: var(--text-2); font-size: 15.5px; }
+    .step a { color: var(--accent); }
+    .note {
+      margin-top: 16px; padding: 18px 22px; border-radius: 16px;
+      background: var(--surface); border: 1px solid var(--line); color: var(--text-2); font-size: 15.5px;
+    }
+    .note strong { color: var(--text); }
+    details.verify { margin-top: 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+    details.verify summary { cursor: pointer; padding: 18px 22px; font-weight: 600; list-style-position: inside; }
+    details.verify summary::marker { color: var(--text-3); }
+    .verify-body { padding: 0 22px 22px; display: grid; gap: 14px; }
+    .kv { display: grid; gap: 4px; }
+    .kv span { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); }
+    .kv code {
+      font-family: var(--mono); font-size: 13.5px; color: var(--text);
+      background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px;
+      overflow-wrap: anywhere;
+    }
+
+    /* ---------- Final CTA ---------- */
+    .final { text-align: center; padding: 104px 0 112px; position: relative; overflow: hidden; }
+    .final::before {
+      content: ""; position: absolute; left: 50%; top: 50%; width: 900px; height: 500px; transform: translate(-50%,-50%);
+      background: radial-gradient(closest-side, var(--glow), transparent 70%); pointer-events: none;
+    }
+    .final .wrap { position: relative; }
+    .final img.mark { width: 64px; height: auto; margin: 0 auto 28px; }
+    .final h2 { font-size: clamp(34px, 5vw, 54px); font-weight: 800; }
+    .final p { color: var(--text-2); margin: 16px auto 0; max-width: 480px; font-size: 18px; }
+    .final .cta-row { justify-content: center; }
+
+    /* ---------- Footer ---------- */
+    footer { border-top: 1px solid var(--line); padding: 32px 0 40px; color: var(--text-3); font-size: 15px; }
+    footer .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+    footer nav { display: flex; flex-wrap: wrap; gap: 20px; }
+    footer a { text-decoration: none; color: var(--text-2); }
+    footer a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+  <!-- Inline icon sprite -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></symbol>
+      <symbol id="i-github" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57l-.02-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .1-.78.42-1.3.76-1.6-2.67-.31-5.47-1.34-5.47-5.94 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3"/></symbol>
+      <symbol id="i-wifi-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h.01"/><path d="M8.5 16.43a5 5 0 0 1 7 0"/><path d="M5 12.86a10 10 0 0 1 5.17-2.69"/><path d="M19 12.86a10 10 0 0 0-2-1.52"/><path d="M2 8.82a15 15 0 0 1 4.18-2.64"/><path d="M22 8.82a15 15 0 0 0-11.29-3.76"/><path d="m2 2 20 20"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+      <symbol id="i-queue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h13"/><path d="M3 12h9"/><path d="M3 18h9"/><path d="M20 15V5"/><circle cx="17.5" cy="17.5" r="2.5"/></symbol>
+      <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.46 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+      <symbol id="i-contrast" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18Z" fill="currentColor"/></symbol>
+      <symbol id="i-resume" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></symbol>
+      <symbol id="i-music" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+      <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+      <symbol id="i-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></symbol>
+      <symbol id="i-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></symbol>
+    </defs>
+  </svg>
+
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="#top" aria-label="Wavely home">
+        <img src="assets/mark.svg" alt="" width="26" height="25">
+        Wavely
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#features">Features</a>
+        <a href="#screens">Screens</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#install">Install</a>
+        <a href="https://github.com/imbikramsaha/Wavely">GitHub</a>
+      </nav>
+      <a class="btn btn-primary btn-sm nav-cta" data-apk-link href="https://github.com/imbikramsaha/Wavely/releases/download/v2.0.0/Wavely-2.0.0.apk">
+        <svg aria-hidden="true"><use href="#i-download"/></svg> Download
+      </a>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-copy">
+          <span class="eyebrow"><span class="dot"></span>Free for Android · v<span data-apk-version>2.0.0</span></span>
+          <h1>Your music.<br><span class="grad-text">Nothing else.</span></h1>
+          <p class="lede">Wavely is a calm, minimal player for the songs already on your phone. No account, no ads, no streaming. It doesn't even ask for internet access.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" data-apk-link href="https://github.com/imbikramsaha/Wavely/releases/download/v2.0.0/Wavely-2.0.0.apk">
+              <svg aria-hidden="true"><use href="#i-download"/></svg> Download APK
+            </a>
+            <a class="btn btn-ghost" href="https://github.com/imbikramsaha/Wavely">
+              <svg aria-hidden="true"><use href="#i-github"/></svg> View on GitHub
+            </a>
+          </div>
+          <p class="dl-meta"><span>Version <span data-apk-version>2.0.0</span></span><span data-apk-size>2.7 MB</span><span>Android 8.0+</span></p>
+        </div>
+        <div class="phones" aria-hidden="true">
+          <div class="phone back"><img src="assets/screens/songs.webp" alt="" width="600" height="1176" fetchpriority="high"></div>
+          <div class="phone front"><img src="assets/screens/now-playing.webp" alt="" width="600" height="1176" fetchpriority="high"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section" id="features">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">Features</p>
+          <h2>Everything you need, nothing you don't.</h2>
+          <p>Wavely does one job: play the music on your device, beautifully and reliably.</p>
+        </div>
+        <div class="features">
+          <article class="feature">
+            <div class="icon"><svg aria-hidden="true"><use href="#i-wifi-off"/></svg></div>
+            <h3>Truly offline</h3>
+            <p>Plays the audio files on your phone. No sign-in, no streaming, no network required.</p>
+          </article>
+          <article class="feature">
+            <div class="icon"><svg aria-hidden="true"><use href="#i-lock"/></svg></div>
+            <h3>Background playback</h3>
+            <p>Lock-screen and notification controls, headset buttons, and audio focus handled properly.</p>
+          </article>
+          <article class="feature">
+            <div class="icon"><svg aria-hidden="true"><use href="#i-queue"/></svg></div>
+            <h3>A queue that behaves</h3>
+            <p>Play next, add to queue, drag to reorder, swipe to remove with undo. Shuffle and repeat too.</p>
+          </article>
+          <article class="feature">
+            <div class="icon"><svg aria-hidden="true"><use href="#i-heart"/></svg></div>
+            <h3>Playlists &amp; favorites</h3>
+            <p>Create, rename, and reorder playlists. Heart a song to keep it one tap away.</p>
+          </article>
+          <article class="feature">
+            <div class="icon"><svg aria-hidden="true"><use href="#i-moon"/></svg></div>
+            <h3>Sleep timer &amp; speed</h3>
+            <p>Drift off with a sleep timer, or change playback speed for podcasts and lectures.</p>
+          </article>
+          <article class="feature">
+            <div class="icon"><svg aria-hidden="true"><use href="#i-search"/></svg></div>
+            <h3>Search &amp; sort</h3>
+            <p>Find any song by title or artist. Sort by title, date added, or duration.</p>
+          </article>
+          <article class="feature">
+            <div class="icon"><svg aria-hidden="true"><use href="#i-contrast"/></svg></div>
+            <h3>Light, dark &amp; Material You</h3>
+            <p>Follows your system theme, with optional dynamic color from your wallpaper.</p>
+          </article>
+          <article class="feature">
+            <div class="icon"><svg aria-hidden="true"><use href="#i-resume"/></svg></div>
+            <h3>Picks up where you left off</h3>
+            <p>Your queue and position are saved, so the next launch resumes right where you stopped.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screens -->
+    <section class="section screens-section" id="screens">
+      <div class="wrap screens-top">
+        <div class="section-head">
+          <p class="kicker">Screens</p>
+          <h2>Quiet by design.</h2>
+          <p>Deep neutrals, one gentle gradient, and artwork that fills itself in when your files don't have any.</p>
+        </div>
+        <div class="scroller-btns">
+          <button type="button" data-scroll="-1" aria-label="Previous screenshots"><svg aria-hidden="true"><use href="#i-left"/></svg></button>
+          <button type="button" data-scroll="1" aria-label="Next screenshots"><svg aria-hidden="true"><use href="#i-right"/></svg></button>
+        </div>
+      </div>
+      <div class="scroller" id="scroller" tabindex="0" aria-label="App screenshots">
+        <figure class="shot"><div class="phone"><img loading="lazy" src="assets/screens/songs.webp" width="600" height="1176" alt="Songs list with gradient fallback artwork and the mini-player"></div><figcaption><strong>Songs</strong><span>Your whole library</span></figcaption></figure>
+        <figure class="shot"><div class="phone"><img loading="lazy" src="assets/screens/now-playing.webp" width="600" height="1176" alt="Now Playing screen with large artwork and playback controls"></div><figcaption><strong>Now Playing</strong><span>Drag up from the mini-player</span></figcaption></figure>
+        <figure class="shot"><div class="phone"><img loading="lazy" src="assets/screens/track-actions.webp" width="600" height="1176" alt="Track menu: play next, add to queue, add to playlist, add to favorites"></div><figcaption><strong>Track actions</strong><span>Play next, queue, playlist</span></figcaption></figure>
+        <figure class="shot"><div class="phone"><img loading="lazy" src="assets/screens/playlists.webp" width="600" height="1176" alt="Playlists screen showing Favorites"></div><figcaption><strong>Playlists</strong><span>Favorites built in</span></figcaption></figure>
+        <figure class="shot"><div class="phone"><img loading="lazy" src="assets/screens/search.webp" width="600" height="1176" alt="Search screen"></div><figcaption><strong>Search</strong><span>By title or artist</span></figcaption></figure>
+        <figure class="shot"><div class="phone"><img loading="lazy" src="assets/screens/sort.webp" width="600" height="1176" alt="Sort sheet: title, date added, duration, descending"></div><figcaption><strong>Sort</strong><span>Title, date, or duration</span></figcaption></figure>
+        <figure class="shot"><div class="phone"><img loading="lazy" src="assets/screens/light-theme.webp" width="600" height="1176" alt="Songs list in the light theme"></div><figcaption><strong>Light theme</strong><span>Or follow the system</span></figcaption></figure>
+        <figure class="shot"><div class="phone"><img loading="lazy" src="assets/screens/settings.webp" width="600" height="1176" alt="Settings: theme and dynamic color"></div><figcaption><strong>Settings</strong><span>Theme and dynamic color</span></figcaption></figure>
+      </div>
+    </section>
+
+    <!-- Privacy -->
+    <section class="section" id="privacy">
+      <div class="wrap">
+        <div class="privacy">
+          <div class="copy">
+            <p class="kicker">Privacy</p>
+            <h2>No account. No ads. No tracking.</h2>
+            <p>Wavely has no analytics and no servers to talk to. It doesn't request the internet permission at all, so your library and listening habits never leave your phone.</p>
+          </div>
+          <ul class="perm-list" aria-label="Permissions">
+            <li class="yes"><div class="pi"><svg aria-hidden="true"><use href="#i-music"/></svg></div><div><strong>Music &amp; audio</strong><span>To find the songs stored on your device.</span></div></li>
+            <li class="yes"><div class="pi"><svg aria-hidden="true"><use href="#i-bell"/></svg></div><div><strong>Notifications</strong><span>For playback controls on the lock screen and in the shade.</span></div></li>
+            <li class="no"><div class="pi"><svg aria-hidden="true"><use href="#i-x"/></svg></div><div><strong>Never asked for</strong><span>Internet, location, contacts, camera, or an account.</span></div></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Install -->
+    <section class="section" id="install" style="padding-top:0">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">Install</p>
+          <h2>Up and running in a minute.</h2>
+          <p>Wavely is distributed as an APK on GitHub. Requires Android 8.0 (Oreo) or newer.</p>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <h3>Download the APK</h3>
+            <p>On your Android phone, tap <a data-apk-link href="https://github.com/imbikramsaha/Wavely/releases/download/v2.0.0/Wavely-2.0.0.apk">Download APK</a>. The file is about <span data-apk-size>2.7 MB</span>.</p>
+          </div>
+          <div class="step">
+            <h3>Allow the install</h3>
+            <p>Open the downloaded file. If Android asks, let your browser or file manager <em>install unknown apps</em>, then tap <strong>Install</strong>.</p>
+          </div>
+          <div class="step">
+            <h3>Open Wavely</h3>
+            <p>Grant access to <strong>Music and audio</strong> and your library appears. That's it.</p>
+          </div>
+        </div>
+        <p class="note"><strong>Updating from an older version?</strong> Install the new APK over the existing app. Every release is signed with the same key, so your playlists and favorites stay put.</p>
+        <details class="verify" id="verify">
+          <summary>Verify your download</summary>
+          <div class="verify-body">
+            <div class="kv"><span>File SHA-256 (<span data-apk-name>Wavely-2.0.0.apk</span>)</span><code data-apk-sha>7783b784daf7372f25caa56488d45efd0c49750ff3751fa1b9a33a908b482358</code></div>
+            <div class="kv"><span>Signing certificate SHA-256</span><code>f4a72cb2e772e0fc70ba0fc7e9567a8bf2b22bc019828480efe41332688c882a</code></div>
+            <div class="kv"><span>Package name</span><code>com.wavely.player</code></div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final">
+      <div class="wrap">
+        <img class="mark" src="assets/mark.svg" alt="" width="64" height="61">
+        <h2>Press play.</h2>
+        <p>Free, ad-free, with the full source on GitHub. Get the latest version of Wavely for Android.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" data-apk-link href="https://github.com/imbikramsaha/Wavely/releases/download/v2.0.0/Wavely-2.0.0.apk">
+            <svg aria-hidden="true"><use href="#i-download"/></svg> Download APK
+          </a>
+          <a class="btn btn-ghost" href="https://github.com/imbikramsaha/Wavely/releases">All releases</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© 2026 Bikram Saha · Wavely</span>
+      <nav aria-label="Footer">
+        <a href="https://github.com/imbikramsaha/Wavely">Source code</a>
+        <a href="https://github.com/imbikramsaha/Wavely/releases">Releases</a>
+        <a href="https://github.com/imbikramsaha/Wavely/issues">Report an issue</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    // Screenshot scroller buttons
+    (function () {
+      var sc = document.getElementById('scroller');
+      document.querySelectorAll('[data-scroll]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          sc.scrollBy({ left: Number(b.dataset.scroll) * sc.clientWidth * 0.8, behavior: 'smooth' });
+        });
+      });
+    })();
+
+    // Point every download link at the newest GitHub release (falls back to v2.0.0 links above).
+    (function () {
+      if (!window.fetch) return;
+      fetch('https://api.github.com/repos/imbikramsaha/Wavely/releases/latest', { headers: { Accept: 'application/vnd.github+json' } })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (rel) {
+          if (!rel || !rel.assets) return;
+          var apk = rel.assets.find(function (a) { return /\.apk$/i.test(a.name); });
+          if (!apk) return;
+          var ver = String(rel.tag_name || '').replace(/^v/i, '');
+          var set = function (sel, fn) { document.querySelectorAll(sel).forEach(fn); };
+          set('[data-apk-link]', function (a) { a.href = apk.browser_download_url; });
+          if (ver) set('[data-apk-version]', function (e) { e.textContent = ver; });
+          set('[data-apk-size]', function (e) { e.textContent = (apk.size / 1048576).toFixed(1) + ' MB'; });
+          set('[data-apk-name]', function (e) { e.textContent = apk.name; });
+          var sha = apk.digest && /^sha256:/.test(apk.digest) ? apk.digest.slice(7) : null;
+          if (sha) set('[data-apk-sha]', function (e) { e.textContent = sha; });
+          else if (ver && ver !== '2.0.0') set('[data-apk-sha]', function (e) { e.parentElement.hidden = true; });
+        })
+        .catch(function () {});
+    })();
+  </script>
+</body>
+</html>

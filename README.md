@@ -1,150 +1,167 @@
-# Listn — Offline Android Music Player
+<p align="center">
+  <img src="docs/assets/icon-192.png" width="96" height="96" alt="Wavely app icon">
+</p>
 
-An offline, local-library music player built to the spec in [`design.md`](design.md).
-Kotlin · Jetpack Compose · Media3 (ExoPlayer) · Room · Hilt · Paging 3.
+<h1 align="center">Wavely</h1>
 
-This repository currently implements **Stages 0–3** of the build plan in `design.md §11`
-(scaffold → playback engine → library data layer → UI). Stages 4–6 (advanced queue
-editing UI, responsive/landscape two-pane, full edge-case hardening) are scoped but not
-yet built — see *Status* below.
+<p align="center">
+  A calm, minimal music player for the songs already on your Android phone.<br>
+  No account · No ads · No tracking · No internet permission
+</p>
 
-## Modules
+<p align="center">
+  <a href="https://github.com/imbikramsaha/Wavely/releases/download/v2.0.0/Wavely-2.0.0.apk"><img alt="Download APK v2.0.0" src="https://img.shields.io/badge/Download%20APK-v2.0.0-5B8DF4?style=for-the-badge&logo=android&logoColor=white"></a>
+  &nbsp;
+  <a href="https://imbikramsaha.github.io/Wavely/"><img alt="Visit the website" src="https://img.shields.io/badge/Website-Visit-0A0C10?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
+</p>
+
+<p align="center">
+  <img alt="Android 8.0+" src="https://img.shields.io/badge/Android-8.0%2B-3DDC84?logo=android&logoColor=white">
+  <img alt="Kotlin 2.1" src="https://img.shields.io/badge/Kotlin-2.1-7F52FF?logo=kotlin&logoColor=white">
+  <img alt="Jetpack Compose" src="https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4?logo=jetpackcompose&logoColor=white">
+  <img alt="Media3 ExoPlayer" src="https://img.shields.io/badge/Media3-ExoPlayer-FF6F00">
+  <a href="https://github.com/imbikramsaha/Wavely/actions/workflows/ci.yml"><img alt="CI status" src="https://github.com/imbikramsaha/Wavely/actions/workflows/ci.yml/badge.svg"></a>
+</p>
+
+<p align="center">
+  <img src="docs/assets/screens/songs.webp" width="200" alt="Songs list">
+  <img src="docs/assets/screens/now-playing.webp" width="200" alt="Now Playing">
+  <img src="docs/assets/screens/track-actions.webp" width="200" alt="Track actions menu">
+  <img src="docs/assets/screens/light-theme.webp" width="200" alt="Light theme">
+</p>
+
+---
+
+## Download
+
+**[⬇️ Download Wavely 2.0.0 (APK, 2.7 MB)](https://github.com/imbikramsaha/Wavely/releases/download/v2.0.0/Wavely-2.0.0.apk)** · requires Android 8.0 (Oreo) or newer
+
+You can also get it from the **[Wavely website](https://imbikramsaha.github.io/Wavely/)**, or browse every version on the **[Releases page](https://github.com/imbikramsaha/Wavely/releases)**.
+
+### Install
+
+1. Open the download link above **on your Android phone**.
+2. Open the downloaded `Wavely-2.0.0.apk`. If Android asks, allow your browser or file manager to **install unknown apps**.
+3. Tap **Install**, open Wavely, and grant access to **Music and audio**. Your library appears right away.
+
+> **Updating from an older version?** Install the new APK over the existing app. Every release is signed with the same key, so your playlists and favorites are kept.
+
+<details>
+<summary><b>Verify your download</b></summary>
+<br>
+
+| | |
+|---|---|
+| File | `Wavely-2.0.0.apk` (2,851,930 bytes) |
+| File SHA-256 | `7783b784daf7372f25caa56488d45efd0c49750ff3751fa1b9a33a908b482358` |
+| Signing certificate SHA-256 | `f4a72cb2e772e0fc70ba0fc7e9567a8bf2b22bc019828480efe41332688c882a` |
+| Package name | `com.wavely.player` |
+| Version | 2.0.0 (version code 5) |
+
+```bash
+sha256sum Wavely-2.0.0.apk
+apksigner verify --print-certs Wavely-2.0.0.apk
+```
+
+</details>
+
+## Features
+
+- **Truly offline.** Plays the audio files on your device. No sign-in, no streaming, no network required.
+- **Background playback.** Media notification, lock-screen controls, headset buttons, and proper audio-focus handling.
+- **A queue that behaves.** Play next, add to queue, drag to reorder, swipe to remove with undo. Shuffle and repeat included.
+- **Playlists and favorites.** Create, rename, reorder, and delete playlists. Heart a song to keep it one tap away.
+- **Sleep timer and playback speed.** Fall asleep to music, or speed up podcasts and lectures.
+- **Search and sort.** Find songs by title or artist. Sort by title, date added, or duration.
+- **Multi-select.** Long-press to select several tracks, then queue them or add them to a playlist in one go.
+- **Light, dark, and Material You.** Follows your system theme, with optional dynamic color from your wallpaper.
+- **Generated artwork.** Tracks without cover art get a soft gradient tile instead of a blank square.
+- **Picks up where you left off.** Your queue and position are restored the next time you open the app.
+- **Phones, tablets, and landscape.** A navigation rail and two-pane Now Playing appear on wider screens.
+
+## Privacy
+
+Wavely has no analytics, no ads, and no servers. It **does not request the internet permission**, so nothing you play can leave your phone.
+
+| Permission | Why |
+|---|---|
+| Music and audio (`READ_MEDIA_AUDIO`, or `READ_EXTERNAL_STORAGE` on Android 12 and below) | To find the songs stored on your device |
+| Notifications | To show playback controls in the notification shade and on the lock screen |
+| Foreground service (media playback) | To keep playing when the app is in the background |
+
+---
+
+## For developers
+
+### Tech stack
+
+Kotlin · Jetpack Compose (Material 3) · Media3 / ExoPlayer · Room · Hilt · Paging 3 · DataStore · Coroutines/Flow
+
+| | |
+|---|---|
+| Min / target SDK | 26 / 35 |
+| Build | AGP 8.7.3 · Gradle 8.11.1 · Kotlin 2.1.0 · KSP 2.1.0-1.0.29 · JDK 17 |
+| Libraries | Compose BOM 2024.12.01 · Media3 1.5.1 · Room 2.6.1 · Hilt 2.53.1 · Paging 3.3.5 |
+
+### Project structure
 
 ```
 :domain   Pure Kotlin. Models, repository interfaces, use cases (no Android imports).
 :data     MediaStore scanning, Room DB, Media3 MediaSessionService + MediaController,
-          repository impls, DataStore settings, Hilt wiring.
-:app      Compose UI: single Activity + NavHost, 3-tab bottom nav, mini-player,
-          Now Playing sheet, Library/Search/Activity/Detail/Settings, ViewModels.
+          repository implementations, DataStore settings, Hilt wiring.
+:app      Compose UI: single Activity + NavHost, bottom nav / navigation rail,
+          mini-player, Now Playing sheet, screens and ViewModels.
+docs/     The project website (GitHub Pages).
 ```
 
-## Building
+The full product and engineering spec lives in [`design.md`](design.md). The v2 visual design handoff (tokens, logo, screens) is in [`v2 design/`](v2%20design/).
 
-No Android toolchain is bundled with this checkout. To build:
+### Build from source
 
-1. Install **JDK 17** and **Android Studio** (Ladybug or newer) with **SDK API 35**.
-2. Open the project folder in Android Studio. It will generate the Gradle wrapper jar
-   and sync automatically.
-   - From the CLI instead: ensure a system `gradle` (8.11+) is installed, run
-     `gradle wrapper` once to create `gradle/wrapper/gradle-wrapper.jar`, then
-     `./gradlew :app:assembleDebug`.
-3. Run on a device/emulator with **API 26–35**. Grant the audio-read permission when asked.
+Requirements: **JDK 17** and the **Android SDK (API 35)**. Android Studio Ladybug or newer is the easiest route.
 
-Useful tasks:
+- **Android Studio:** open the project folder and let Gradle sync, then run the `app` configuration.
+- **Command line:** the Gradle wrapper JAR isn't committed, so use a system Gradle **8.11.1** (or run `gradle wrapper` once to generate `./gradlew`):
 
-```
-./gradlew :app:assembleDebug      # build the APK
-./gradlew test                    # JVM unit tests (domain + data)
-./gradlew :app:installDebug       # install on a connected device
+```bash
+gradle :app:assembleDebug     # debug APK → app/build/outputs/apk/debug/
+gradle :app:installDebug      # install on a connected device
+gradle test                   # JVM unit tests (domain, data, app)
+gradle lint                   # Android Lint
 ```
 
-## Architecture highlights (mapping to design.md)
+#### Release builds
 
-- **Stable track identity** (`§10.3`, risk **T-1**): playlists/queue/favorites are keyed by
-  `{path + size + date_added}` (`TrackIdentity`), re-resolved against MediaStore on load —
-  never the mutable MediaStore `_ID`. Regression-tested in
-  `data/src/test/.../MediaRepositoryImplTest.kt`.
-- **Playback** (`§10.1/§10.4`): `PlaybackService : MediaSessionService` owns the ExoPlayer
-  (audio focus + becoming-noisy enabled); the UI drives it through `PlaybackController`
-  (a `MediaController` wrapper, `PlaybackConnection`) and never touches Media3 directly.
-  The pre-connection window is surfaced as `isConnecting` (risk **T-3**).
-- **Shuffle** (`§10.2`, risk **T-4**): uses Media3's built-in shuffle order rather than a
-  hand-rolled index map.
-- **Now Playing sheet** (`§5.3`, risk **T-2**): the mini-player and sheet live in one
-  hierarchy; expansion is driven by a **drag fraction** (`MainScreen`), not a shared-element
-  transition.
-- **Large libraries** (`§6.1`, risk **T-7**): lists are Paging 3 (`ListPagingSource` over an
-  in-memory snapshot).
-- **Position ticker** (`§10.1`): runs only while playing AND the UI is foreground
-  (`LifecycleAware` → `setUiActive`), to spare battery.
+Release signing is read from a `keystore.properties` file in the project root. The file is gitignored and must never be committed:
 
-## Dependency versions
+```properties
+storeFile=your-release-key.jks
+storePassword=…
+keyAlias=…
+keyPassword=…
+```
 
-The catalog (`gradle/libs.versions.toml`) is pinned to a **known-good, internally
-consistent set** (AGP 8.7.3 / Gradle 8.11.1 / Kotlin 2.1.0 / KSP 2.1.0-1.0.29 / Compose
-BOM 2024.12.01 / Hilt 2.53.1 / Room 2.6.1 / Media3 1.5.1) rather than the absolute latest.
-This set uses **KSP1** (Room 2.6.1 does not support KSP2 — that needs Room 2.7.0+), and
-avoids the breaking changes in the AGP 9.x / Gradle 9.x / Compose 1.11 line that can't be
-validated without building.
+Then run `gradle :app:assembleRelease`. Without the file, the release build is produced unsigned.
 
-To move to current stable later (Android Studio will flag updates): bump Room to 2.8.x and
-re-enable KSP2 (`ksp.useKSP2=true` in `gradle.properties`) **together**, switch
-`fallbackToDestructiveMigration()` to the `dropAllTables = true` overload, and step AGP +
-Gradle + Kotlin + KSP up in lockstep (each Kotlin release has a matching KSP build).
+### Architecture notes
 
-## Status
+- **Stable track identity.** Playlists, the queue, and favorites are keyed by `{path + size + date_added}` (`TrackIdentity`) and re-resolved against MediaStore on load, never the mutable MediaStore `_ID`. Regression-tested in `MediaRepositoryImplTest`.
+- **Playback.** `PlaybackService : MediaSessionService` owns ExoPlayer, with audio focus and becoming-noisy handling enabled. The UI drives it through a `MediaController` wrapper (`PlaybackConnection`) and never touches Media3 directly.
+- **Shuffle and queue.** Shuffle uses Media3's built-in shuffle order. Queue edits while shuffled preserve the current track.
+- **Now Playing.** The mini-player and sheet share one hierarchy, and expansion follows the drag fraction. Landscape uses a two-pane layout, and expanded widths use a persistent side panel. Predictive back collapses the sheet.
+- **Large libraries.** Lists are paged with Paging 3. The position ticker runs only while playing *and* in the foreground, to save battery.
+- **Resilience.** Unplayable or deleted tracks are skipped with a toast. A revoked permission yields an empty library instead of a crash. The session is saved on backgrounding and restored (paused) after process death.
 
-Implemented (Stages 0–3):
-- Multi-module scaffold, Hilt DI, light/dark/system theme + dynamic color toggle.
-- ExoPlayer playback: play/pause/seek/next/prev (3s restart rule), shuffle, repeat,
-  speed, audio focus, media notification, background playback.
-- MediaStore scan → tracks/albums/artists/folders, per-list sort (DataStore), search,
-  permission flow, Room schema (playlists/favorites/history/counts/session).
-- UI: Library (4 tabs), Search, Activity (Queue/Playlists/History/Favorites), Detail,
-  Settings, persistent mini-player, drag-expanding Now Playing sheet, sleep timer.
-- Session save (debounced) + cold-start restore into PAUSED.
+### Tests and CI
 
-Implemented (Stage 4):
-- Track overflow context menu (play next, add to queue, add to playlist, go to album/artist,
-  favorite) + add-to-playlist dialog with inline create.
-- Queue editing: long-press **drag-reorder**, **swipe-to-remove with Undo** snackbar.
-  Remove-current advances and shuffle/edit-while-shuffled preserve the current track — these
-  correctness guarantees (risk **T-4**) are delegated to Media3's built-in queue + shuffle order.
-- Playlist management: create / rename / delete (delete confirmed), playlist-detail
-  drag-reorder + remove-track-with-Undo. Round-trips Room.
-- Multi-select on the Library Tracks tab (long-press → contextual bar: play next / add to
-  queue / add to playlist).
+JVM unit tests cover track identity, sorting, repeat modes, the previous-track rule, duration formatting, and the speed cycle. GitHub Actions ([`ci.yml`](.github/workflows/ci.yml)) runs `gradle test` and `gradle lint` on every push and pull request.
 
-Implemented (Stage 5 — responsive, design.md §8):
-- Width size classes (Compact / Medium / Expanded at 600/840dp, computed via `BoxWithConstraints`).
-- **Compact**: bottom nav. **Medium/Expanded**: navigation rail replaces it. Album grid scales
-  2 → 3 → 4 columns.
-- Now Playing fork (risk **T-5**): portrait = expanding bottom sheet; landscape = full-screen
-  two-pane (art left, controls right); **Expanded** width = persistent Now Playing side panel
-  (no sheet). `NowPlayingControls` is shared across all three.
-- **Predictive back** collapses the sheet/overlay via `PredictiveBackHandler` (risk **T-6**).
-- Rotation preserves the open/closed Now Playing state (`rememberSaveable`); playback itself is
-  unaffected (it lives in the service).
-- Insets: edge-to-edge + status/navigation-bar padding per region + `displayCutoutPadding` on the
-  rail and landscape panes; IME via `adjustResize`.
+### Website
 
-Implemented (Stage 6 — hardening, the code-level edge cases from design.md §11):
-- **Corrupt / unsupported / deleted-while-playing track** → `onPlayerError` skips to the next
-  item and emits a toast ("Can't play … — skipping"); no crash/stall.
-- **Permission revoked while running** → MediaStore queries catch `SecurityException` and return
-  an empty library instead of crashing.
-- **Process death / low-memory restore** → session is saved debounced AND immediately on
-  backgrounding (`persistNow()`), restored into PAUSED on next launch.
-- **StrictMode** in debug builds (disk/network-on-main + leaked-closeable/SQLite detection) — the
-  release gate against main-thread I/O.
-- Audio focus, becoming-noisy, and media-button handling are delegated to Media3 (ExoPlayer
-  `handleAudioFocus` + `MediaSession`); the position ticker already stops when backgrounded.
+The landing page at **[imbikramsaha.github.io/Wavely](https://imbikramsaha.github.io/Wavely/)** is a single static file, [`docs/index.html`](docs/index.html), served by GitHub Pages from the `docs/` folder on `main`. Its download buttons fetch the newest GitHub Release automatically, so publishing a new release with an `.apk` asset updates the site with no code change.
 
-Verified earlier by construction: zero/unknown duration (clamped), missing art (placeholder),
-long/RTL tags (ellipsis + `supportsRtl` + auto-mirrored icons), MediaStore-id change (T-1 test).
+---
 
-Still device-only (can't run here — see `design.md` §11 release gates):
-- Macrobenchmark **P90 ≤ 16ms** frame gate, **Baseline Profile** generation, **Accessibility
-  Scanner** pass, LeakCanary verification, and the full instrumented happy-path E2E.
-- Manual edge cases needing hardware: Bluetooth connect/disconnect, headset single/double/triple
-  tap, audio-focus storms, real 10k-track scroll/memory.
-
-Remaining product gaps:
-- Multi-select only on the Library Tracks tab; device-file deletion intentionally omitted
-  (only library-membership edits).
-- String externalization for the newer screens (some literals inline pending l10n).
-
-Standing caveat (all stages): gesture/animation/feel code and the responsive layouts were written
-without an on-device run. The logic is correct by construction; thresholds, transitions, and
-inset/cutout behavior on real hardware will need a tuning pass once it builds.
-
-## Tests
-
-JVM unit tests (run with `gradle test`):
-- `domain`: `PreviousTrackRuleTest`, `TrackSortingTest`, `RepeatModeTest`, `TrackIdentityTest`
-  (asKey/fromKey round-trip + T-1 id-independence).
-- `data`: `MediaRepositoryImplTest` (T-1 identity-stability regression + missing-file drop).
-- `app`: `FormatTest` (duration/remaining/secondary-line), `NextSpeedTest` (speed cycle).
-
-CI: `.github/workflows/ci.yml` runs `gradle test` + `gradle lint` on every push/PR (JDK 17,
-pinned Gradle 8.11.1 so it doesn't need a committed wrapper jar).
+<p align="center">
+  Made by <a href="https://github.com/imbikramsaha">Bikram Saha</a>
+</p>
